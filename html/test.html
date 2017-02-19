@@ -3,12 +3,13 @@
 <head>
 <script src="../js/angular.min.js"></script>
 <script type="text/javascript" src="../js/angular-animate.js"></script>
-<script type="text/javascript" src="../js/angular-animate.js"></script>
+<script type="text/javascript" src="../js/angular-sanitize.js"></script>
+<script type="text/javascript" src="../js/ui-bootstrap.js"></script>
 <link rel="stylesheet" href="../css/bootstrap.min.css" />
 </head>
 <body>
 
-	<div data-ng-app="testApp" data-ng-controller="testCtrl">
+	<div data-ng-app="testApp" data-ng-controller="testCtrl" >
 		<p>
 			Name: <input type="text" data-ng-model="testName">
 		</p>
@@ -19,16 +20,15 @@
 	<p>
 		<button type="button" class="btn btn-default btn-sm">Toggle
 			last panel</button>
-		<button type="button" class="btn btn-default btn-sm">Enable
-			/ Disable first panel</button>
+		<button type="button" class="btn btn-default btn-sm">Enable /
+			Disable first panel</button>
 	</p>
 
 	<button type="button" class="btn btn-primary">Single Toggle</button>
-	<div style="display:inline-block; min-height:290px;">
-	<div uib-datepicker class="well well-sm" datepicker-options="options"></div>
-	</div>
+
 	<script>
-		var app = angular.module("testApp", []);
+		var app = angular.module("testApp", [ 'ui.bootstrap', 'ngAnimate',
+				'ngSanitize' ]);
 
 		app.controller("testCtrl", function($scope) {
 			$scope.testName = "John";
