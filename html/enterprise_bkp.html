@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="../js/angular.min.js"></script>
+<script type="text/javascript" src="../js/angular-animate.js"></script>
+<script type="text/javascript" src="../js/angular-sanitize.js"></script>
+<script type="text/javascript" src="../js/ui-bootstrap.js"></script>
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+</head>
+<body>
+	<div ng-app="enterpriseApp" ng-controller="enterpriseCtrl">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="enterpriseName" class="control-label col-xs-3">Enterprise
+					Name</label>
+				<div class="col-xs-6">
+					<input type="text" class="form-control" id="enterpriseName"
+						placeholder="Enterprise Name" ng-model="enterprise.name" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-offset-3 col-xs-6">
+					<button type="button" class="btn btn-primary"
+						ng-click="createEnterprise()">Create Enterprise</button>
+				</div>
+			</div>
+		</form>
+		<!-- <p>Data : {{content}}</p>
+		<p>Status : {{statuscode}}</p>
+		<p>StatusText : {{statustext}}</p> -->
+		<table class="table table-hover text-center" style="width: auto !important; margin:auto">
+		<thead class="bg-primary">
+      	<tr>
+        	<th>Enterprise Id</th>
+        	<th>Enterprise Name</th>
+      	</tr>
+    	</thead>
+		<tr ng-repeat="x in content">
+        <td>{{x.id}}</td>
+        <td>{{x.name}}</td>
+    	</tr>
+    	</table>
+	</div>
+	<script type="text/javascript">
+		var app = angular.module("enterpriseApp", [ 'ui.bootstrap',
+				'ngAnimate', 'ngSanitize' ]);
+		app.controller("enterpriseCtrl",function($scope, $http) {
+							$scope.createEnterprise = function() {
+								var req = {
+										 method: 'GET',
+										 url: 'http://localhost:8080/SaasDashboard/rest/enterprise/all'
+										 };
+								//alert($scope.enterprise.name);
+								$http(req)
+										.then(
+												// Handles Success
+												function(response) {
+													//alert("Hi");
+													$scope.content = response.data;
+													$scope.statuscode = response.status;
+													$scope.statustext = response.statusText;
+												}, function() {
+													
+													$scope.content = "An error occurred!!";
+													alert($scope.content);
+												});
+							}
+
+						});
+	</script>
+
+</body>
+</html>
