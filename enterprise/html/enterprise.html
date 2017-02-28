@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../common/css/angular-material.min.css" />
+  <link rel="stylesheet" href="../../common/css/bootstrap.min.css" />
+    <!-- Angular Material requires Angular.js Libraries -->
+  <script src="../../common/js/angular.min.js"></script>
+  <script src="../../common/js/angular-animate.min.js"></script>
+  <script src="../../common/js/angular-aria.min.js"></script>
+  <script src="../../common/js/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="../../common/js/angular-material.min.js"></script>
+  
+  <script src="../js/enterprise.js"></script>
+</head>
+<body ng-app="EnterpriseApp">
+	<div class="md-toolbar-tools">
+   		<h2>
+       		<span>SaaSDashboard</span>
+   		</h2>
+	</div>
+  <div ng-cloak ng-controller="enterpriseCtrl"  class="md-inline-form" layout="column" >
+  <md-content layout-padding>
+    <md-tabs md-dynamic-height md-border-bottom >
+      <md-tab>
+      <md-tab-label>Create Enterprise</md-tab-label>
+        <md-tab-body> 
+        <div>
+          <md-input-container>
+            <label>Enterprise</label>
+            <input ng-model="enterprise.name" />
+        </md-input-container>
+        </div>
+        <div>
+        <md-button class="md-primary md-raised" ng-click="createEnterprise()">Create</md-button>
+        </div>
+        </md-tab-body>
+      </md-tab>
+      <md-tab label="View Enterprises" ng-click="getEnterprises()">
+        <md-content class="md-padding">
+        <h2 class="md-display-1" style="color:#337ab7">Enterprises</h2>
+          <table class="table" style="margin:auto">
+          <tr class="bg-primary">
+          <th>Enterprise Id</th>
+          <th>Enterprise Name</th>
+          </tr>
+          <tr ng-repeat="x in data">
+        	<td>{{x.id}}</td>
+        	<td>{{x.name}}</td>
+    	</tr>
+          </table>
+        </md-content>
+      </md-tab>
+      <md-tab label="Update Enterprise">
+        <md-content class="md-padding">
+          
+   		<div>
+          	<md-input-container>
+            	<label>Enterprise Id</label>
+            	<input ng-model="enterprise.id" />
+        	</md-input-container>
+        </div>
+    	<div>
+          	<md-input-container>
+            	<label>Enterprise</label>
+            	<input ng-model="enterprise.name" />
+        	</md-input-container>
+        </div>
+        
+        <div>
+        	<md-button class="md-primary md-raised" ng-click="updateEnterprise()">Update</md-button>
+        </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Delete Enterprise">
+        <md-content class="md-padding">
+          
+   		<div>
+          	<md-input-container>
+            	<label>Enterprise Id</label>
+            	<input ng-model="enterprise.id" />
+        	</md-input-container>
+        </div>      
+        <div>
+        	<md-button class="md-primary md-raised" ng-click="deleteEnterprise()">Delete</md-button>
+        </div>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>
+  
+</body>
+</html>
