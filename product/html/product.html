@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../common/css/angular-material.min.css" />
+  <link rel="stylesheet" href="../../common/css/bootstrap.min.css" />
+    <!-- Angular Material requires Angular.js Libraries -->
+  <script src="../../common/js/angular.min.js"></script>
+  <script src="../../common/js/angular-animate.min.js"></script>
+  <script src="../../common/js/angular-aria.min.js"></script>
+  <script src="../../common/js/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="../../common/js/angular-material.min.js"></script>
+  
+  <script src="../js/product.js"></script>
+</head>
+<body ng-app="ProductApp">
+	<div class="md-toolbar-tools">
+   		<h2>
+       		<span>SaaSDashboard</span>
+   		</h2>
+	</div>
+  <div ng-cloak ng-controller="productCtrl"  class="md-inline-form" layout="column" >
+  <md-content layout-padding>
+    <md-tabs md-dynamic-height md-border-bottom >
+      <md-tab>
+      <md-tab-label>Create Product</md-tab-label>
+        <md-tab-body> 
+        <div class="form-group" ng-form name="productCreateForm">
+        <div>
+          	<md-input-container>
+            	<label>Product</label>
+            	<input ng-model="product.name" required name = "createProductName"/>
+            	<ng-messages for="productCreateForm.createProductName.$error">
+            		<ng-message when="required">
+            			Product name is required
+            		</ng-message>
+            	</ng-messages>
+        	</md-input-container>
+        </div>
+        <div>	
+        	<md-input-container>
+            	<label>Enterprise Id</label>
+            	<input ng-model="product.enterprise.id" required name ="createEnterpriseId"/>
+            	<ng-messages for="productCreateForm.createEnterpriseId.$error">
+            		<ng-message when="required">
+            			Enterprise Id is required
+            		</ng-message>
+            	</ng-messages>
+        	</md-input-container>
+        </div>
+        <div>
+        <md-button class="md-primary md-raised" ng-click="createProduct(productCreateForm.$invalid)">Create</md-button>
+        </div>
+        </div>
+        </md-tab-body>
+      </md-tab>
+      <md-tab label="View Products by Enterprise">
+        <md-content class="md-padding">
+        <div class="form-group" ng-form name="productViewForm">
+        <div>
+          	<md-input-container>
+            	<label>Enterprise Id</label>
+            	<input ng-model="product.enterprise.id" name="viewEnterpriseId" required />
+            	<ng-messages for="productViewForm.viewEnterpriseId.$error">
+    				<ng-message when="required">
+        				Enterprise Id is required
+    				</ng-message>
+				</ng-messages>
+        	</md-input-container>
+        	<span>
+        	<md-button class="md-primary md-raised" ng-click="getProducts(productViewForm.$invalid)">View</md-button>
+        	</span>
+        </div>
+        </div>	
+        <h2 class="md-display-1" style="color:#337ab7" ng-show="data.length">Products</h2>
+          <table class="table" style="margin:auto" ng-show="data.length">
+          <tr class="bg-primary">
+          <th>Product Id</th>
+          <th>Product Name</th>
+          <th>Enterprise Id</th>
+          <th>Enterprise Name</th>
+          </tr>
+          <tr ng-repeat="product in data">
+        	<td>{{product.id}}</td>
+        	<td>{{product.name}}</td>
+        	<td>{{product.enterprise.id}}</td>
+        	<td>{{product.enterprise.name}}</td>
+    	</tr>
+          </table>
+        </md-content>
+      </md-tab>
+      <md-tab label="Update Product">
+        <md-content class="md-padding">
+          
+   		<div>
+          	<md-input-container>
+            	<label>Enterprise Id</label>
+            	<input ng-model="enterprise.id" />
+        	</md-input-container>
+        </div>
+    	<div>
+          	<md-input-container>
+            	<label>Enterprise</label>
+            	<input ng-model="enterprise.name" />
+        	</md-input-container>
+        </div>
+        
+        <div>
+        	<md-button class="md-primary md-raised" ng-click="updateEnterprise()">Update</md-button>
+        </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Delete Product">
+        <md-content class="md-padding">
+          
+   		<div>
+          	<md-input-container>
+            	<label>Enterprise Id</label>
+            	<input ng-model="enterprise.id" />
+        	</md-input-container>
+        </div>      
+        <div>
+        	<md-button class="md-primary md-raised" ng-click="deleteEnterprise()">Delete</md-button>
+        </div>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>
+  
+</body>
+</html>
