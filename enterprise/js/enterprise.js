@@ -29,7 +29,9 @@ var app = angular.module('EnterpriseApp', ['ngMaterial']);
         				$scope.enterprise.name='';
         			},
         			function(response){
-        				alert(response.data.message);
+        				if(response.status === -1){
+        					$mdToast.show($mdToast.simple().textContent('Unable to communicate to server').position('top').hideDelay(1000));
+        				}
         			}
         	);
         	
