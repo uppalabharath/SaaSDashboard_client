@@ -90,6 +90,7 @@
 				<th>Product Id</th>
 				<th>Product Name</th>
 				<th>Product Revenue</th>
+				<th>Product Reputation</th>
 				<th>Enterprise Id</th>
 				<th>Enterprise Name</th>
 			</tr>
@@ -97,6 +98,7 @@
 				<td>{{product.id}}</td>
 				<td>{{product.name}}</td>
 				<td>{{product.revenue}}</td>
+				<td>{{product.reputation}}</td>
 				<td>{{product.enterprise.id}}</td>
 				<td>{{product.enterprise.name}}</td>
 			</tr>
@@ -134,7 +136,6 @@
 				<md-button class="md-primary md-raised"
 					ng-click="updateProduct(modifyProductForm.$invalid)">Update</md-button>
 			</div>
-			{{modifyProductForm.$pristine}}
 		</div>
 		</md-card-content> </md-card>
         </md-content>

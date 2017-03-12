@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../common/css/angular-material.min.css" />
+  <link rel="stylesheet" href="../../common/css/bootstrap.min.css" />
+    <!-- Angular Material requires Angular.js Libraries -->
+  <script src="../../common/js/angular.min.js"></script>
+  <script src="../../common/js/angular-animate.min.js"></script>
+  <script src="../../common/js/angular-aria.min.js"></script>
+  <script src="../../common/js/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="../../common/js/angular-material.min.js"></script>
+  
+  <script src="../js/productdetail.js"></script>
+</head>
+<body ng-app="ProductDetailApp">
+	<div class="md-toolbar-tools">
+   		<h2>
+       		<span>SaaSDashboard</span>
+   		</h2>
+	</div>
+  <div ng-cloak ng-controller="productDetailCtrl"  class="md-inline-form" layout="column" >
+  <md-content layout-padding>
+    <md-tabs md-dynamic-height md-border-bottom >
+      <md-tab>
+      <md-tab-label>View / Update Product Detail</md-tab-label>
+        <md-tab-body> 
+        <md-card>
+        <md-card-content>
+        <div class="form-group" ng-form name="productDetailViewForm">
+        <div>
+          	<md-input-container>
+            	<label>Product Id</label>
+            	<input ng-model="productDetailView.id" required name = "productDetailViewid"/>
+            	<ng-messages for="productDetailViewForm.productDetailViewid.$error">
+            		<ng-message when="required">
+            			Product Id is required
+            		</ng-message>
+            	</ng-messages>
+        	</md-input-container>
+        	<md-button class="md-primary md-raised" ng-click="viewProductDetail(productDetailViewForm.$invalid)">View</md-button>
+        </div>
+        </div>
+        </md-card-content>
+        </md-card>
+        <md-card ng-show="productDetailData != null && viewMode">
+        <md-card-title>
+		<md-card-title-text> 
+		<span class="md-headline">{{productDetailData.product.name}}</span>
+		</md-card-title-text>
+		<md-button class="md-primary md-raised" ng-click="toggleViewMode()">Edit mode</md-button>
+		</md-card-title>
+		<md-card-content>
+		<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Product Id: {{productDetailData.product.id}} </h3>
+         </div>
+		</md-list-item>
+		<md-list-item class="md-2-line md-long-text">
+		<div class="md-list-item-text">
+            <h3>Product Info </h3>
+            <p>{{productDetailData.block1}}</p>
+         </div>
+		</md-list-item>
+		<md-list-item class="md-2-line md-long-text">
+		<div class="md-list-item-text">
+            <h3>Updates</h3>
+            <p>{{productDetailData.block2}}</p>
+         </div>
+		</md-list-item>
+		<md-list-item class="md-2-line md-long-text">
+		<div class="md-list-item-text">
+            <h3>Contact Details</h3>
+            <p>{{productDetailData.block3}}</p>
+         </div>
+		</md-list-item>
+		</md-card-content> 
+        </md-card>
+        <md-card ng-show="!viewMode">
+        <!-- productDetailUpdateData != null && -->
+        <md-card-title>
+		<md-card-title-text> 
+		<span class="md-headline">{{productDetailUpdateData.product.name}}</span>
+		</md-card-title-text>
+		<md-button class="md-primary md-raised" ng-click="toggleViewMode()">View mode</md-button>
+		</md-card-title>
+		<md-card-content>
+		<div class="form-group" ng-form name="productDetailUpdateForm">
+		<div>
+		<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Product Id: {{productDetailUpdateData.product.id}} </h3>
+         </div>
+		</md-list-item>
+		<md-input-container class="md-block">
+          <label>Product Info</label>
+          <textarea ng-model="productDetailUpdateData.block1" md-maxlength="4000" rows="5" name="productDetailBlock1"></textarea>
+          <ng-messages for="productDetailUpdateForm.productDetailBlock1.$error">
+            		<ng-message when="maxlength">
+            			Product Info content should be less than 4000 characters
+            		</ng-message>
+           </ng-messages>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Updates</label>
+          <textarea ng-model="productDetailUpdateData.block2" md-maxlength="4000" rows="5" name="productDetailBlock2"></textarea>
+          <ng-messages for="productDetailUpdateForm.productDetailBlock2.$error">
+            		<ng-message when="maxlength">
+            			Updates content should be less than 4000 characters
+            		</ng-message>
+           </ng-messages>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label>Contact Details</label>
+          <textarea ng-model="productDetailUpdateData.block3" md-maxlength="4000" rows="5" name="productDetailBlock3"></textarea>
+          <ng-messages for="productDetailUpdateForm.productDetailBlock3.$error">
+            		<ng-message when="maxlength">
+            			Contact Detail content should be less than 4000 characters
+            		</ng-message>
+           </ng-messages>
+        </md-input-container>
+		</div>
+		<div>
+		<md-button class="md-primary md-raised" ng-click="updateProductDetail(productDetailUpdateForm.$invalid)">Update</md-button>
+		</div>
+		</div>
+		</md-card-content>
+		</md-card>
+        </md-tab-body>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>
+  
+</body>
+</html>
