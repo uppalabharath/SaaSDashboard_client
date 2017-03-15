@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../common/css/angular-material.min.css" />
+  <link rel="stylesheet" href="../../common/css/bootstrap.min.css" />
+    <!-- Angular Material requires Angular.js Libraries -->
+  <script src="../../common/js/angular.min.js"></script>
+  <script src="../../common/js/angular-animate.min.js"></script>
+  <script src="../../common/js/angular-aria.min.js"></script>
+  <script src="../../common/js/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="../../common/js/angular-material.min.js"></script>
+  
+  <script src="../js/customer.js"></script>
+</head>
+<body ng-app="CustomerApp">
+	<div class="md-toolbar-tools">
+   		<h2>
+       		<span>SaaSDashboard</span>
+   		</h2>
+	</div>
+	<div ng-controller = "customerCtrl" >
+	<md-content layout-padding>
+	<md-tabs md-dynamic-height md-border-bottom >
+	<!-- Create Customer -->
+	<md-tab label="Create Customer">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="customerCreateForm">
+	<div>
+	<md-input-container>
+	<label>Customer Name</label>
+	<input ng-model="customerCreate.name" name="customerCreateName" required />
+	<ng-messages for="customerCreateForm.customerCreateName.$error">
+	<ng-message when="required"> Customer Name is mandatory </ng-message> </ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<label>Customer Email</label>
+	<input ng-model="customerCreate.email" name="customerCreateEmail" required type="email"/>
+	<ng-messages for="customerCreateForm.customerCreateEmail.$error">
+	<ng-message when="required"> Customer Email is mandatory </ng-message> 
+	<ng-message when="email">Email Id is invalid. </ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<label>Product Id</label>
+	<input ng-model="customerCreate.product.id" name="customerCreateProductId" required />
+	<ng-messages for="customerCreateForm.customerCreateProductId.$error">
+	<ng-message when="required"> Product Id is mandatory </ng-message> </ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-button class="md-primary md-raised"
+					ng-click="createCustomer(customerCreateForm.$invalid)">Create</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	<md-tab label="View / Update Customer">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div ng-form="customerSearchForm" class="form-group">
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input ng-model="customerSearch.id" name="customerSearchId" required />
+	<ng-messages for="customerSearchForm.customerSearchId.$error"><ng-message when="required">Customer Id is mandatory</ng-message></ng-messages>
+	</md-input-container>
+	<md-button class="md-primary md-raised"
+					ng-click="viewCustomer(customerSearchForm.$invalid)">View</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="customerViewData != null && viewMode">
+	<md-card-title>
+		<md-card-title-text> 
+		<span class="md-headline">{{customerViewData.name}}</span>
+		</md-card-title-text>
+		<md-button class="md-primary md-raised" ng-click="toggleViewMode()">Edit mode</md-button>
+	</md-card-title>
+	<md-card-content>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Customer Id: {{customerViewData.id}} </h3>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Customer Name: {{customerViewData.name}} </h3>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Email: {{customerViewData.email}} </h3>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Product Id: {{customerViewData.product.id}} </h3>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line" >
+		<div class="md-list-item-text">
+            <h3>Product Name: {{customerViewData.product.name}} </h3>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Reputation: {{customerViewData.reputation}} </h3>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Revenue: {{customerViewData.revenue}} </h3>
+         </div>
+	</md-list-item>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="customerUpdateData!=null && !viewMode">
+	<md-card-title>
+		<md-card-title-text> 
+		<span class="md-headline">{{customerUpdateData.name}}</span>
+		</md-card-title-text>
+		<md-button class="md-primary md-raised" ng-click="toggleViewMode()">View mode</md-button>
+	</md-card-title>
+	<md-card-content>
+	<div class="form-group" ng-form = "customerUpdateForm">
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Customer Id: {{customerUpdateData.id}} </h3>
+         </div>
+	</md-list-item>
+	<md-input-container class="md-block">
+	<input type="text" ng-model="customerUpdateData.name" required name="customerUpdateName" />
+	<ng-messages for="customerUpdateForm.customerUpdateName.$error">
+	<ng-message when="required">Customer Name is Mandatory</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-input-container class="md-block">
+	<input type="email" required name="customerUpdateEmail" ng-model="customerUpdateData.email" />
+	<ng-messages for="customerUpdateForm.customerUpdateEmail.$error">
+	<ng-message when="required">Customer Email is mandatory</ng-message>
+	<ng-message when="email">Customer Email is invalid</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-input-container class="md-block">
+	<input name="customerUpdateProductId" required ng-model="customerUpdateData.product.id" />
+	<ng-messages for="customerUpdateForm.customerUpdateProductId.$error">
+	<ng-message when="required">Product Id is mandatory</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Reputation: {{customerUpdateData.reputation}} </h3>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line">
+		<div class="md-list-item-text">
+            <h3>Revenue: {{customerUpdateData.revenue}} </h3>
+         </div>
+	</md-list-item>
+	<div>
+	<md-button class="md-primary md-raised"
+					ng-click="updateCustomer(customerUpdateForm.$invalid)">Update</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-tab label="View Customers by Product">
+	<md-card>
+	<md-card-content>
+	<div ng-form="customerProductViewForm" class="form-group">
+	<md-input-container>
+	<label>Product Id</label>
+	<input type="text" required name="customerProductSearchId" ng-model="customerProduct.product.id" />
+	<ng-messages for="customerProductViewForm.customerProductSearchId.$error">
+	<ng-message when="required">Product Id is required</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-primary md-raised" ng-click="viewCustomerByProduct(customerProductViewForm.$invalid)">View</md-button>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="customerSearchData.length">
+	<md-card-title>
+		<md-card-title-text> 
+		<span class="md-headline">Customers</span>
+		</md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+	<table class="table" style="margin: auto" ng-show="customerSearchData.length">
+			<tr class="bg-primary">
+				<th>Customer Id</th>
+				<th>Customer Name</th>
+				<th>Customer Email</th>
+				<th>Customer Reputation</th>
+				<th>Customer Revenue</th>
+				<th>Product Id</th>
+				<th>Product Name</th>
+			</tr>
+			<tr ng-repeat="customer in customerSearchData">
+				<td>{{customer.id}}</td>
+				<td>{{customer.name}}</td>
+				<td>{{customer.email}}</td>
+				<td>{{customer.reputation}}</td>
+				<td>{{customer.revenue}}</td>
+				<td>{{customer.product.id}}</td>
+				<td>{{customer.product.name}}</td>
+			</tr>
+		</table>
+	</md-card-content>
+	</md-card>
+	</md-tab>
+
+	</md-content>
+	</md-tab>
+	</md-tabs>
+	
+	</md-content>
+	</div>
+</body>	
+</html>

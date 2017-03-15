@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../common/css/angular-material.min.css" />
+  <link rel="stylesheet" href="../../common/css/bootstrap.min.css" />
+    <!-- Angular Material requires Angular.js Libraries -->
+  <script src="../../common/js/angular.min.js"></script>
+  <script src="../../common/js/angular-animate.min.js"></script>
+  <script src="../../common/js/angular-aria.min.js"></script>
+  <script src="../../common/js/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="../../common/js/angular-material.min.js"></script>
+  
+  <script src="../js/revenue.js"></script>
+</head>
+<body ng-app="RevenueApp">
+	<div class="md-toolbar-tools">
+   		<h2>
+       		<span>SaaSDashboard</span>
+   		</h2>
+	</div>
+	<div ng-controller = "revenueCtrl" >
+	<md-content layout-padding>
+	<md-tabs md-dynamic-height md-border-bottom >
+	<md-tab label="Add Customer Revenue">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="reveneuAddForm">
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="text" required name="revenueAddCustomerId" ng-model="revenueAdd.customer.id" />
+	<ng-messages for="revenueAddForm.revenueAddCustomerId.$error">
+	<ng-message when="required">Customer Id is mandatory</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<md-select ng-model="revenueAdd.month" placeholder="Month" required name="revenueAddMonth">
+          <md-option value="1">January</md-option>
+          <md-option value="2">February</md-option>
+          <md-option value="3">March</md-option>
+          <md-option value="4">April</md-option>
+          <md-option value="5">May</md-option>
+          <md-option value="6">June</md-option>
+          <md-option value="7">July</md-option>
+          <md-option value="8">August</md-option>
+          <md-option value="9">September</md-option>
+          <md-option value="10">October</md-option>
+          <md-option value="11">November</md-option>
+          <md-option value="12">December</md-option>
+     </md-select>
+     <ng-messages for="revenueAddForm.revenueAddMonth.$error">
+     <ng-message when="required">Month is mandatory</ng-message>
+     </ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<label>Year</label>
+	<input type="number" maxlength="4" required name="revenueAddYear" ng-model="revenueAdd.year" />
+	<ng-messages for="revenueAddForm.revenueAddYear.$error">
+	<ng-message when="required">Year is mandatory</ng-message>
+	<ng-message when="maxlength">Year is invalid</ng-message>
+	<ng-message when="number">Year is invalid</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<label>Amount</label>
+	<input type="number" required name="revenueAddAmount" ng-model="revenueAdd.amount" />
+	<ng-messages for="revenueAddForm.revenueAddAmount.$error">
+	<ng-message when="required">Amount is mandatory</ng-message>
+	<ng-message when="number">Amount is invalid</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-button class="md-primary md-raised" ng-click="addRevenue(revenueAddForm.$invalid)">Create</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	<md-tab label="View Customer Revenue">
+	<md-content>
+	<md-card>
+	<md-card-content>
+	<div ng-form="revenueViewForm" class="form-group">
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" ng-model="revenueView.customer.id" required  name="revenueViewCustomerId" />
+	<ng-messages for = "revenueViewForm.revenueViewCustomerId.$error">
+	<ng-message when = "required">Customer Id is mandatory</ng-message>
+	<ng-message when = "number">Customer Id is invalid </ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button ng-click="viewRevenue(revenueViewForm.$invalid)" class="md-primary md-raised">Search</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="customerRevenueData != null && customerRevenueData.length">
+	<md-card-title>
+	<md-card-title-text>
+	Customer Revenue Info
+	</md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+	<table class="table" style="margin: auto" ng-show="customerRevenueData.length">
+			<tr class="bg-primary">
+				<th>Year</th>
+				<th>Month</th>
+				<th>Amount</th>
+			</tr>
+			<tr ng-repeat="customerRevenue in customerRevenueData">
+				<td>{{customerRevenue.year}}</td>
+				<td>{{customerRevenue.monthName}}</td>
+				<td>{{customerRevenue.amount}}</td>
+			</tr>
+	</table>
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	</md-tabs>
+	</md-content>
+	</div>
+</body>
+</html>
