@@ -19,6 +19,8 @@ app.controller('productCtrl', function($scope,$http,$mdToast){
 					function(response){
 						if(response.status === -1){
 							$mdToast.show($mdToast.simple().textContent('Unable to communicate to server').position('top').hideDelay(1000));
+						}else {
+							$mdToast.show($mdToast.simple().textContent('Internal Server error occurred').position('top').hideDelay(2000));
 						}
 					}
 			);
