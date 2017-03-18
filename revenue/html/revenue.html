@@ -130,6 +130,60 @@
 	</md-card>
 	</md-content>
 	</md-tab>
+	<md-tab label="Delete Revenue">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="reveneuDeleteForm">
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="text" required name="revenueDeleteCustomerId" ng-model="revenueDelete.customer.id" />
+	<ng-messages for="reveneuDeleteForm.revenueDeleteCustomerId.$error">
+	<ng-message when="required">Customer Id is mandatory</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<md-select ng-model="revenueDelete.month" placeholder="Month" required name="revenueDeleteMonth">
+          <md-option value="1">January</md-option>
+          <md-option value="2">February</md-option>
+          <md-option value="3">March</md-option>
+          <md-option value="4">April</md-option>
+          <md-option value="5">May</md-option>
+          <md-option value="6">June</md-option>
+          <md-option value="7">July</md-option>
+          <md-option value="8">August</md-option>
+          <md-option value="9">September</md-option>
+          <md-option value="10">October</md-option>
+          <md-option value="11">November</md-option>
+          <md-option value="12">December</md-option>
+     </md-select>
+     <ng-messages for="reveneuDeleteForm.revenueDeleteMonth.$error">
+     <ng-message when="required">Month is mandatory</ng-message>
+     </ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<label>Year</label>
+	<input type="number" maxlength="4" required name="revenueDeleteYear" ng-model="revenueDelete.year" />
+	<ng-messages for="reveneuDeleteForm.revenueDeleteYear.$error">
+	<ng-message when="required">Year is mandatory</ng-message>
+	<ng-message when="maxlength">Year is invalid</ng-message>
+	<ng-message when="number">Year is invalid</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-button class="md-primary md-raised" ng-click="deleteRevenue(reveneuDeleteForm.$invalid)">Delete</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
 	</md-tabs>
 	</md-content>
 	</div>

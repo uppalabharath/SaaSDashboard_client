@@ -55,5 +55,31 @@ app.controller('revenueCtrl',function($scope,$mdToast,$http){
 		}else{
 			$mdToast.show($mdToast.simple().textContent('Some mandatory fields are not filled').position('top').hideDelay(2000));
 		}
+	};
+	// Delete Revenue
+	$scope.deleteRevenue = function(value){
+		if(!value){
+			var req = {
+				method:"POST",
+				url:"http://localhost:8080/SaasDashboard/rest/revenue/delete",
+				data:$scope.revenueDelete
+			};
+			$http(req).then(
+				function(response){
+					$mdToast.show($mdToast.simple().textContent(response.data.message).position('top').hideDelay(1000));
+					$scope.revenueDelete=null;
+					$scope.revenueDeleteForm.$setPristine();
+					$scope.revenueDeleteForm.$setUntouched();
+				},function(response){
+					if(response.status === -1){
+						$mdToast.show($mdToast.simple().textContent('Unable to communicate to server').position('top').hideDelay(1000));
+					}else {
+						$mdToast.show($mdToast.simple().textContent('Internal Server error occurred').position('top').hideDelay(2000));
+					}
+				}
+			);
+		}else{
+			$mdToast.show($mdToast.simple().textContent('Some mandatory fields are not filled').position('top').hideDelay(2000));
+		}
 	}
 });
