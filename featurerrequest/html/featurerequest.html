@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../common/css/angular-material.min.css" />
+  <link rel="stylesheet" href="../../common/css/bootstrap.min.css" />
+    <!-- Angular Material requires Angular.js Libraries -->
+  <script src="../../common/js/angular.min.js"></script>
+  <script src="../../common/js/angular-animate.min.js"></script>
+  <script src="../../common/js/angular-aria.min.js"></script>
+  <script src="../../common/js/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="../../common/js/angular-material.min.js"></script>
+  
+  <script src="../js/featurerequest.js"></script>
+</head>
+<body ng-app="FeatureRequestApp">
+	<div class="md-toolbar-tools">
+   		<h2>
+       		<span>SaaSDashboard</span>
+   		</h2>
+	</div>
+	<div ng-controller = "featureRequestCtrl" >
+	<md-tabs md-dynamic-height md-border-bottom >
+	<md-tab label="Create Feature Request">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="requestCreateForm" >
+	<div>
+	<md-input-container class="md-block">
+	<label>Subject</label>
+	<input type="text" name="requestCreateSubject" required ng-model="featureRequestCreate.subject" ng-maxlength="255"/>
+	<ng-messages for="requestCreateForm.requestCreateSubject.$error">
+	<ng-message when="required">Subject is mandatory</ng-message>
+	<ng-message when="maxlength">Subject should be less than 255 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container class="md-block">
+	<label>Description</label>
+	<textarea required rows="3" name="requestCreateDesc" ng-model="featureRequestCreate.description" ng-maxlength="4000"></textarea>
+	<ng-messages for="requestCreateForm.requestCreateDesc.$error">
+	<ng-message when="required">Description is mandatory</ng-message>
+	<ng-message when="maxlength">Description should not exceed 4000 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" name="requestCreateCustomerId" ng-model="featureRequestCreate.customer.id" required />
+	<ng-messages for="requestCreateForm.requestCreateCustomerId.$error">
+	<ng-message when="required">Customer Id is mandatory</ng-message>
+	<ng-message when="number">Customer Id is invalid</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-primary md-raised" ng-click=createRequest(requestCreateForm.$invalid)>Create</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	<md-tab label="View Feature Request">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="requestViewForm">
+	<div>
+	<md-input-container>
+	<label>Feature request Id</label>
+	<input type="number" name="requestViewId" ng-model="requestView.id" ng-maxlength="8" required />
+	<ng-messages for="requestViewForm.requestViewId.$error">
+	<ng-message when="required">Feature Request id is mandatory</ng-message>
+	<ng-message when="maxlength">Feature Request id should not exceed eight characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-raised md-primary" ng-click="viewRequest(requestViewForm.$invalid)">View</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="featureRequestView!=null && viewMode">
+	<md-card-title>
+	<md-card-title-text>
+	<span class="md-headline">{{featureRequestView.subject}}</span>
+	</md-card-title-text>
+	<md-button ng-if="viewMode && !featureRequestView.freezed && featureRequestView.customer.id != upVoteViewCustomerId" ng-click="upvoteRequest(upvoteReqid,upVoteViewCustomerId,upVoteViewForm.$invalid)">Upvote</md-button>
+	<md-button ng-if="viewMode && !featureRequestView.freezed" ng-click="toggleViewMode()">Edit Mode</md-button>
+	</md-card-title>
+	<md-card-content>
+	<div ng-form="upVoteViewForm" class="form-group">
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" name="upVoteViewCustomer" required ng-model="upVoteViewCustomerId" />
+	<ng-messages for="upVoteViewForm.upVoteViewCustomer.$error">
+	<ng-message when = "required">Customer id is required</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<md-list-item class="md-2-line md-long-text">
+		<div class="md-list-item-text">
+            <h3>Description</h3>
+            <p>{{featureRequestView.description}}</p>
+         </div>
+	</md-list-item>
+	<md-list-item class="md-2-line md-long-text">
+		<div class="md-list-item-text">
+		<h3>Details:</h3>
+			<ul>
+            <li>Creation Date (YYYY-MMM-DD): {{featureRequestView.creationDate}}</li>
+            <li>Upvotes: {{featureRequestView.upvoteCount}}</li>
+            <li>Impact Factor: {{featureRequestView.impactFactor}}</li>
+            </ul>
+         </div>
+	</md-list-item>
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	<md-tab label="View Feature Requests by Product Id">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="requestViewProductForm">
+	<div>
+	<md-input-container>
+	<label>Product Id</label>
+	<input type="number" name="productId" required ng-model="requestViewProductId" ng-maxlength="9"/>
+	<ng-messages for="requestViewProductForm.productId.$error">
+	<ng-message when="required">Product Id is mandatory</ng-message>
+	<ng-message when="maxlength">Product Id cannot exceed 9 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-raised md-primary" ng-click="viewRequestByProduct(requestViewProductForm.$invalid)">Search</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="requestProductData != null">
+	<md-card-title class="md-theme-light">
+	<md-card-title-text>
+	Feature Requests
+	</md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+	<md-list>
+      <md-list-item class="md-3-line" ng-repeat="featureReq in requestProductData">
+        <div class="md-list-item-text">
+          <h3>Subject: {{featureReq.subject}}</h3>
+          <h4>
+          <span>Upvotes: {{featureReq.upvoteCount}}</span>
+          <span>Impact factor: {{featureReq.impactFactor}}</span>
+          <span ng-show="featureReq.freezed">Freezed</span>
+          </h4>
+          <p>Description: <br/>{{featureReq.description}}</p>
+        </div>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
+    <div>
+    <span flex></span>
+        <md-button class="md-raised md-primary" aria-label="Recalculate Import Factors" ng-click="recalculateImportFactors(recalculateProductId)">
+          Recalculate Import Factors
+        </md-button>
+    </div>    
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	</md-tabs>
+	</div>
+	</body>
+	</html>
