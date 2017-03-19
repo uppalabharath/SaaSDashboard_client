@@ -88,7 +88,7 @@
 	<md-card-title-text>
 	<span class="md-headline">{{featureRequestView.subject}}</span>
 	</md-card-title-text>
-	<md-button ng-if="viewMode && !featureRequestView.freezed && featureRequestView.customer.id != upVoteViewCustomerId" ng-click="upvoteRequest(upvoteReqid,upVoteViewCustomerId,upVoteViewForm.$invalid)">Upvote</md-button>
+	<md-button ng-if="viewMode && !featureRequestView.freezed && featureRequestView.customer.id != upVoteViewCustomerId" ng-click="upvoteRequest(featureRequestView.id,upVoteViewCustomerId,upVoteViewForm.$invalid)">Upvote</md-button>
 	<md-button ng-if="viewMode && !featureRequestView.freezed" ng-click="toggleViewMode()">Edit Mode</md-button>
 	</md-card-title>
 	<md-card-content>
@@ -111,12 +111,130 @@
 		<div class="md-list-item-text">
 		<h3>Details:</h3>
 			<ul>
+			<li>Created By: {{featureRequestView.customer.name}}</li>
             <li>Creation Date (YYYY-MMM-DD): {{featureRequestView.creationDate}}</li>
             <li>Upvotes: {{featureRequestView.upvoteCount}}</li>
             <li>Impact Factor: {{featureRequestView.impactFactor}}</li>
             </ul>
          </div>
 	</md-list-item>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="featureUpdateData !=null && !viewMode">
+	<md-card-title>
+	<md-card-title-text>
+	<span class="md-headline">{{featureUpdateData.subject}}</span>
+	</md-card-title-text>
+	<md-button ng-if="!viewMode && !featureUpdateData.freezed" ng-click="toggleViewMode()">View Mode</md-button>
+	</md-card-title>
+	<md-card-content>
+	<div ng-form="requestUpdateForm" class="form-group">
+
+	<md-input-container class="md-block">
+	<label>Subject</label>
+	<input type="text" name="requestUpdateSubject" required ng-model="featureUpdateData.subject" ng-maxlength="255" />
+	<ng-messages for="requestUpdateForm.requestUpdateSubject.$error">
+	<ng-message when="required">Subject is mandatory</ng-message>
+	<ng-message when="maxlength">Subject cannot exceed 255 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-input-container class="md-block">
+	<label>Description</label>
+	<textarea rows="3" ng-maxlength="4000" ng-model="featureUpdateData.description" name="requestUpdateDescription" required ></textarea>
+	<ng-messages for="requestUpdateForm.requestUpdateDescription.$error">
+	<ng-message when="required">Description is mandatory</ng-message>
+	<ng-message when="maxlength">Description cannot exceed 4000 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-list-item class="md-2-line md-long-text">
+		<div class="md-list-item-text">
+		<h3>Details:</h3>
+			<ul>
+			<li>Created By: {{featureUpdateData.customer.name}}</li>
+            <li>Creation Date (YYYY-MMM-DD): {{featureUpdateData.creationDate}}</li>
+            <li>Upvotes: {{featureUpdateData.upvoteCount}}</li>
+            <li>Impact Factor: {{featureUpdateData.impactFactor}}</li>
+            </ul>
+        </div>
+	</md-list-item>
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" name="requestUpdateCustomerId" required ng-model="featureUpdateData.customer.id" />
+	<ng-messages for="requestUpdateForm.requestUpdateCustomerId.$error">
+	<ng-message when = "required">Customer id is required</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-primary md-raised" ng-click="updateRequest(requestUpdateForm.$invalid)">Update Feature Request</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="workAroundReqData != null">
+	<md-card-title>
+	<md-card-title-text>
+	<span class="md-headline">Workarounds</span>
+	</md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+	<div class="form-group" ng-form="upvoteWorkAroundForm">
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" ng-maxlength="9" required name="upVoteWorkAroundCustId" ng-model="upvoteWorkAroundCustomerId" />
+	<ng-messages for="upvoteWorkAroundForm.upVoteWorkAroundCustId.$error">
+	<ng-message when="required">Customer id is mandatory</ng-message>
+	<ng-message when="maxlength">Customer id should not exceed 9 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<md-list>
+      <md-list-item class="md-2-line" ng-repeat="workaround in workAroundReqData">
+        <div class="md-list-item-text md-long-text">
+          <span>WorkAround Id: {{workaround.id}}</span>	
+          <p>Description: <br/>{{workaround.description}}</p>
+          <div>
+          <h4>
+          <span>Upvotes: {{workaround.upvoteCount}}</span>
+          <span>Created by: {{workaround.customer.name}}</span>
+          </h4>
+          </div>
+        </div>
+        <md-button class="md-primary md-raised" ng-click="upVoteWorkAround(featureRequestView.id,workaround.id,upvoteWorkAroundForm.$invalid)" ng-show="!featureRequestView.freezed && workaround.customer.id != upvoteWorkAroundCustomerId">Upvote WorkAround</md-button>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="featureRequestView != null && !featureRequestView.freezed">
+	<md-card-title class="md-theme-light">
+	<md-card-title-text>
+	<span class="md-headline">New WorkAround</span>
+	</md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+	<div class="form-group" ng-form="workAroundCreateForm">
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" name="workAroundCreateCustId" required ng-model="workAroundCreate.customer.id" ng-maxlength="9" />
+	<ng-messages for="workAroundCreateForm.workAroundCreateCustId.$error">
+	<ng-message when="required">Customer Id is mandatory</ng-message>
+	<ng-message when="maxlength">Customer id should not exceed 9 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	</div>
+	<md-input-container class="md-block">
+	<label>WorkAround Description</label>
+	<textarea rwos="4" ng-maxlength="4000" ng-model="workAroundCreate.description" name="workAroundCreateDesc" required></textarea>
+	<ng-messages for="workAroundCreateForm.workAroundCreateDesc.$error">
+	<ng-message when="required">WorkAround Descrption is mandatory</ng-message>
+	<ng-message when="maxlength"></ng-message>
+	</ng-messages>
+	</md-input-container>
+	<div>
+	<md-button class="md-primary md-raised" ng-click="createWorkAround(featureRequestView.id,workAroundCreateForm.$invalid)">Create WorkAround</md-button>
+	</div>
+	</div>
 	</md-card-content>
 	</md-card>
 	</md-content>
@@ -143,7 +261,7 @@
 	<md-card ng-show="requestProductData != null">
 	<md-card-title class="md-theme-light">
 	<md-card-title-text>
-	Feature Requests
+	<span class="md-headline">Feature Requests</span>
 	</md-card-title-text>
 	</md-card-title>
 	<md-card-content>
@@ -167,6 +285,102 @@
           Recalculate Import Factors
         </md-button>
     </div>    
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	<md-tab label="View Feature Requests by Customer Id">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="requestViewCustomerForm">
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" name="customerId" required ng-model="requestViewCustomerId" ng-maxlength="9"/>
+	<ng-messages for="requestViewCustomerForm.customerId.$error">
+	<ng-message when="required">Customer Id is mandatory</ng-message>
+	<ng-message when="maxlength">Customer Id cannot exceed 9 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-raised md-primary" ng-click="viewRequestByCustomer(requestViewCustomerForm.$invalid)">Search</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="requestCustomerData != null">
+	<md-card-title class="md-theme">
+	<md-card-title-text>
+	<span class="md-headline">Feature Requests</span>
+	</md-card-title-text>
+	</md-card-title>
+	<md-card-content>
+	<md-list>
+      <md-list-item class="md-3-line" ng-repeat="featureReq in requestCustomerData">
+        <div class="md-list-item-text">
+          <h3>Subject: {{featureReq.subject}}</h3>
+          <h4>
+          <span>Upvotes: {{featureReq.upvoteCount}}</span>
+          <span>Impact factor: {{featureReq.impactFactor}}</span>
+          <span ng-show="featureReq.freezed">Freezed</span>
+          </h4>
+          <p>Description: <br/>{{featureReq.description}}</p>
+        </div>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
+	</md-card-content>
+	</md-card>
+	</md-content>
+	</md-tab>
+	<md-tab label="Update WorkAround">
+	<md-content class="md-padding">
+	<md-card>
+	<md-card-content>
+	<div class="form-group" ng-form="workAroundSearchForm">
+	<div>
+	<md-input-container>
+	<label>WorkAround Id</label>
+	<input type="number" required ng-model="workAroundUpdateId" name="workAroundId" ng-maxlength="9" />
+	<ng-messages for="workAroundSearchForm.workAroundId.$error">
+	<ng-message when="required">WorkAround id is mandatory</ng-message>
+	<ng-message when="maxlength">WorkAround id should not exceed 9 characters long</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-primary md-raised" ng-click="viewWorkAround(workAroundSearchForm.$invalid)">Search WorkAround</md-button>
+	</div>
+	</div>
+	</md-card-content>
+	</md-card>
+	<md-card ng-show="workAroundUpdateData != null">
+	<md-card-content>
+	<div class="form-group" ng-form="workAroundUpdateForm">
+	<h4>Request Subject: {{workAroundUpdateData.featureRequest.subject}}</h4>
+	<md-input-container class="md-block">
+	<label>WorkAround Description</label>
+	<textarea ng-maxlength="4000" rows="4" required ng-model="workAroundUpdateData.description" name="workAroundDesc"></textarea>
+	<ng-messages for="workAroundUpdateForm.workAroundDesc.$error">
+	<ng-message when="required">Workaround description is mandatory</ng-message>
+	<ng-message when="maxlength">Workaround should not exceed 4000 characters</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<h5>
+	<span>Created By: {{workAroundUpdateData.customer.name}}</span><br/>
+	<span>Upvotes: {{workAroundUpdateData.upvoteCount}}</span>
+	<span>Creation Date: {{workAroundUpdateData.creationDate}}</span>
+	</h5>
+	<div>
+	<md-input-container>
+	<label>Customer Id</label>
+	<input type="number" required name="workAroundCustId" ng-model="workAroundUpdateData.customer.id" ng-maxlength="9" />
+	<ng-messages for="workAroundUpdateForm.workAroundCustId.$error">
+	<ng-message when="required">Customer id is mandatory</ng-message>
+	<ng-message when="maxlength">Customer id should not exceed 9 characters long</ng-message>
+	</ng-messages>
+	</md-input-container>
+	<md-button class="md-primary md-raised" ng-click="updateWorkAround(workAroundUpdateForm.$invalid)" ng-show="updateWorkAroundCustomerId == workAroundUpdateData.customer.id">Update WorkAround</md-button>
+	</div>
+	</div>
 	</md-card-content>
 	</md-card>
 	</md-content>
