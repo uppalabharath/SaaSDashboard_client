@@ -18,25 +18,34 @@
 <body ng-app="EnterpriseApp">
 	<div class="md-toolbar-tools">
    		<h2>
-       		<span>SaaSDashboard</span>
+       		<a href="../../index.html"><span>SaaSDashboard</span></a>
    		</h2>
 	</div>
   <div ng-cloak ng-controller="enterpriseCtrl"  class="md-inline-form" layout="column" >
   <md-content layout-padding>
     <md-tabs md-dynamic-height md-border-bottom >
-      <md-tab>
-      <md-tab-label>Create Enterprise</md-tab-label>
-        <md-tab-body> 
+      <md-tab label="Create Enterprise">
+        <md-content class="md-padding"> 
+        <md-card>
+        <md-card-content>
+        <div class="form-group" ng-form="enterpriseCreateForm">
         <div>
           <md-input-container>
             <label>Enterprise</label>
-            <input ng-model="enterprise.name" />
+            <input type="text" ng-maxlength="255" ng-model="enterprise.name" required name="enterpriseName" />
+            <ng-messages for="enterpriseCreateForm.enterpriseName.$error">
+            <ng-message when="required">Enterprise Name is mandatory</ng-message>
+            <ng-message when="maxlength">Enterprise Name should not exceed 255 characters</ng-message>
+            </ng-messages>
         </md-input-container>
         </div>
         <div>
-        <md-button class="md-primary md-raised" ng-click="createEnterprise()">Create</md-button>
+        <md-button class="md-primary md-raised" ng-click="createEnterprise(enterpriseCreateForm.$invalid)">Create</md-button>
         </div>
-        </md-tab-body>
+        </div>
+        </md-card-content>
+        </md-card>
+        </md-content>
       </md-tab>
       <md-tab label="View Enterprises" ng-click="getEnterprises()">
         <md-content class="md-padding">
@@ -55,37 +64,59 @@
       </md-tab>
       <md-tab label="Update Enterprise">
         <md-content class="md-padding">
-          
+          <md-card>
+          <md-card-content>
+          <div class="form-group" ng-form="enterpriseUpdateForm">
    		<div>
           	<md-input-container>
             	<label>Enterprise Id</label>
-            	<input ng-model="enterprise.id" />
+            	<input ng-model="enterprise.id" required type="number" ng-maxlength="9" name="enterpriseUpdateId"/>
+            	<ng-messages for="enterpriseUpdateForm.enterpriseUpdateId.$error">
+            	<ng-message when="required">Enterprise Id is mandatory</ng-message>
+            	<ng-message when="maxlength">Enterprise id cannot exceed 9 characters</ng-message>
+            	</ng-messages>
         	</md-input-container>
         </div>
     	<div>
           	<md-input-container>
             	<label>Enterprise</label>
-            	<input ng-model="enterprise.name" />
+            	<input ng-model="enterprise.name" required type="text" ng-maxlength="255" name="enterpriseUpdateName"/>
+            	<ng-messages for="enterpriseUpdateForm.enterpriseUpdateName.$error">
+            	<ng-message when="required">Enterprise name is mandatory</ng-message>
+            	<ng-message when="maxlength">Enterprise name should not exceed 255 characters</ng-message>
+            	</ng-messages>
         	</md-input-container>
         </div>
         
         <div>
-        	<md-button class="md-primary md-raised" ng-click="updateEnterprise()">Update</md-button>
+        	<md-button class="md-primary md-raised" ng-click="updateEnterprise(enterpriseUpdateForm.$invalid)">Update</md-button>
         </div>
+        </div>
+        </md-card-content>
+        </md-card>
         </md-content>
       </md-tab>
       <md-tab label="Delete Enterprise">
         <md-content class="md-padding">
-          
+          <md-card>
+          <md-card-content>
+          <div ng-form="enterpriseDeleteForm" class="form-group">
    		<div>
           	<md-input-container>
             	<label>Enterprise Id</label>
-            	<input ng-model="enterprise.id" />
+            	<input ng-model="enterprise.id" required name="enterpriseDeleteId" ng-maxlength="9" />
+            	<ng-messages for="enterpriseDeleteForm.enterpriseDeleteId.$error">
+            	<ng-message when="required">Enterprise Id is mandatory</ng-message>
+            	<ng-message when="maxlength">Enterprise id cannot exceed 9 characters</ng-message>
+            	</ng-messages>
         	</md-input-container>
         </div>      
         <div>
-        	<md-button class="md-primary md-raised" ng-click="deleteEnterprise()">Delete</md-button>
+        	<md-button class="md-primary md-raised" ng-click="deleteEnterprise(enterpriseDeleteForm.$invalid)">Delete</md-button>
         </div>
+        </div>
+        </md-card-content>
+        </md-card>
         </md-content>
       </md-tab>
     </md-tabs>
