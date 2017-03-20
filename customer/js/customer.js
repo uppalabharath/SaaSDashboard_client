@@ -101,7 +101,7 @@ app.controller('customerCtrl', function($scope,$http,$mdToast){
 		if(!value){
 			var req = {
 				method:"GET",
-				url:"http://localhost:8080/SaasDashboard/rest/customer/all/"+$scope.customerProduct.product.id
+				url:"http://localhost:8080/SaasDashboard/rest/customer/all/product/"+$scope.customerProduct.product.id
 			};
 			$http(req).then(
 				function(response){
